@@ -8,7 +8,7 @@ public class VerseRunner
 	//could be optimized to output a data file
 	public void run()throws Exception
 	{
-		Scanner file = new Scanner(new File("realDat.dat"));
+		Scanner file = new Scanner(new File("bin//NCT15.dat"));
 		map = new TreeMap<>();
 		while(file.hasNextLine()){
 			String[] info = file.nextLine().split("&");
@@ -66,7 +66,18 @@ public class VerseRunner
 			if(map.get(randRef).equals(a))
 				out.println("Correct!");
 			else{ // should output discrepancy
-				
+				String key = map.get(randRef);
+				int iter = Math.min(key.length(), a.length());
+				for(int i=0;i<iter;i++){
+					if(key.charAt(i) != a.charAt(i)){
+						out.println(key.substring(i));
+						return;
+					}
+				}
+				if(key.length()>a.length())
+					out.println("Your input was right but you were missing: "+key.substring(iter));
+				else
+					out.println("You were right but you added this at the end: " + a.substring(iter));
 			}
 		}
 		
