@@ -59,8 +59,14 @@ public class VerseRunner
 		for(String a:map.keySet()){
 			ar[ct++]=a;
 		}
+		Set<String> stuff = new HashSet<String>();
 		while(true){
+			if(ar.length == stuff.size())
+				break;
+			
 			String randRef = ar[(int)(Math.random()*ar.length)];
+			if(stuff.contains(randRef)) continue;
+			stuff.add(randRef);
 			out.print("What is "+randRef+": ");
 			String a = input.nextLine().toLowerCase().replaceAll("\\p{Punct}","").trim();
 			if(map.get(randRef).equals(a))
@@ -68,12 +74,15 @@ public class VerseRunner
 			else{ // should output discrepancy
 				String key = map.get(randRef);
 				int iter = Math.min(key.length(), a.length());
+				boolean cont = false;
 				for(int i=0;i<iter;i++){
 					if(key.charAt(i) != a.charAt(i)){
 						out.println(key.substring(i));
-						return;
+						cont = true;
+						break;
 					}
 				}
+				if(cont)continue;
 				if(key.length()>a.length())
 					out.println("Your input was right but you were missing: "+key.substring(iter));
 				else
